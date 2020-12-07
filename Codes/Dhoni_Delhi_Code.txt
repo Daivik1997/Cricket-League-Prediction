@@ -1,0 +1,21 @@
+library(readr)
+deliveries <- read_csv("C:/Users/DAIVIK/Desktop/deliveries.csv")
+View(deliveries)
+library(readr)
+matches <- read_csv("C:/Users/DAIVIK/Desktop/matches.csv")
+View(matches)
+
+df1 <- deliveries
+df2 <- matches
+
+df1 <- df1[df1$batsman=='MS Dhoni',]
+df2 <- df2[df2$venue == 'Feroz Shah Kotla',]
+
+library(sqldf)
+m <- data.frame()
+df3 <- sqldf("SELECT * FROM df1,df2 where df1.match_id = df2.id")
+df4 <- sqldf("SELECT match_id, sum(df3.batsman_runs) from df3 group by df3.match_id")
+
+df4
+write.csv(df4,'dhoni_tot.csv')
+write.csv(df3,'dhoni.csv')
